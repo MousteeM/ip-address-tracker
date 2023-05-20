@@ -9,7 +9,7 @@ const searchField = document.querySelector('.search-input')
 const card = document.querySelector('.bottom-card')
 let map;
 
-function displayMap(latitude, longitude) {
+function displayMap(latitude, longitude, region, country) {
   if (map) {
     map.remove()
   }
@@ -19,7 +19,7 @@ function displayMap(latitude, longitude) {
     maxZoom: 19,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
   }).addTo(map);
-  L.marker([latitude, longitude]).addTo(map).bindPopup().openPopup()
+  L.marker([latitude, longitude]).addTo(map).bindPopup(`${region}, ${country}`).openPopup()
 }
 
 window.onload = async function() {
@@ -36,14 +36,14 @@ window.onload = async function() {
     const { isp, domains, location: geoLoc } = data2;
     const { country, region, timezone } = geoLoc;
 
-    console.log(latitude, longitude);
+    //console.log(latitude, longitude);
 
     timeZone.textContent = `UTC ${timezone}`;
     ipLocation.textContent = `${region}, ${country}`;
     ipAddress.textContent = ip;
     ispName.textContent = isp;
     card.style.display = 'block';
-    displayMap(latitude, longitude);
+    displayMap(latitude, longitude, region, country);
   };
 
   getLocation();
@@ -76,14 +76,14 @@ search.addEventListener('click', async (e) => {
       const { isp, domains, location: geoLoc } = data2;
       const { country, region, timezone } = geoLoc;
 
-      console.log(latitude, longitude);
+      //console.log(latitude, longitude);
 
       timeZone.textContent = `UTC ${timezone}`;
       ipLocation.textContent = `${region}, ${country}`;
       ipAddress.textContent = searchField.value || ip;
       ispName.textContent = isp;
       card.style.display = 'block';
-      displayMap(latitude, longitude);
+      displayMap(latitude, longitude, region, country);
     } catch (error) {
 
     }
