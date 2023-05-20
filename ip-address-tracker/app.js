@@ -1,4 +1,3 @@
-
 const mapDiv = document.querySelector('#map');
 const ipAddress = document.querySelector('[data-ip-address]')
 const ipLocation = document.querySelector('[data-location]')
@@ -22,32 +21,28 @@ function displayMap(latitude, longitude, region, country) {
   L.marker([latitude, longitude]).addTo(map).bindPopup(`${region}, ${country}`).openPopup()
 }
 
-window.onload = async function() {
-  const getLocation = async function() {
-    const URL1 = 'https://api.geoapify.com/v1/ipinfo?apiKey=a28bc3883c314998be488f09b3dc9ef7';
-    const res = await fetch(URL1);
-    const geoData = await res.json();
-    const { city, continent, ip, location } = geoData;
-    const { latitude, longitude } = location;
-
-    const URL2 = `https://geo.ipify.org/api/v2/country?apiKey=at_dEv7ZRiVnlaP4g3eY61sHXa8egZhf&ipAddress=${ip}`;
-    const res2 = await fetch(URL2);
-    const data2 = await res2.json();
-    const { isp, domains, location: geoLoc } = data2;
-    const { country, region, timezone } = geoLoc;
-
-    //console.log(latitude, longitude);
-
-    timeZone.textContent = `UTC ${timezone}`;
-    ipLocation.textContent = `${region}, ${country}`;
-    ipAddress.textContent = ip;
-    ispName.textContent = isp;
-    card.style.display = 'block';
-    displayMap(latitude, longitude, region, country);
-  };
-
-  getLocation();
-};
+navigator.geolocation.getCurrentPosition(
+  async position => {
+      let { latitude, longitude } = position.coords;
+      // const response = await fetch('https://api.ipify.org?format=json');
+      // const data = await response.json();
+      // const ipAddress = data.ip;
+      // console.log(ipAddress);
+      if (map) {
+        map.remove()
+      }
+      // Create the Leaflet map and set the view
+      map = L.map(mapDiv).setView([latitude, longitude], 13);
+      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+      }).addTo(map);
+      L.marker([latitude, longitude]).addTo(map).bindPopup(`Your current Location`).openPopup()
+    },
+    error => {
+      console.log("something went wrong", error);
+    }
+);
 
 search.addEventListener('click', async (e) => {
   e.preventDefault()
