@@ -77,7 +77,7 @@ search.addEventListener('click', async (e) => {
       ipLocation.textContent = `${region}, ${country}`;
       ipAddress.textContent = searchField.value || ip;
       ispName.textContent = isp;
-      card.style.display = 'block';
+      card.style.display = 'grid';
       displayMap(latitude, longitude, region, country);
     } catch (error) {
 
