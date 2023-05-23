@@ -99,6 +99,9 @@ h6 {
   .container {
     padding: 4rem;
     height: 15vh;
+    background-image: url('/ip-address-tracker/images/pattern-bg-desktop.png');
+  background-repeat: no-repeat;
+  background-size: cover;
   }
 
   .container>h1 {
